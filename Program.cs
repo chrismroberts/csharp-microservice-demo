@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Coravel;
 using Serilog;
 using Serilog.Formatting.Json;
+using dotenv.net;
 
 namespace OrderProcessingWorker
 {
@@ -14,6 +15,8 @@ namespace OrderProcessingWorker
     {
         public static void Main(string[] args)
         {
+            DotEnv.Load();
+
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .WriteTo.File("logs/log.txt", 
@@ -24,7 +27,7 @@ namespace OrderProcessingWorker
 
             try
             {
-                Log.Information("Starting our service..");
+                Log.Information("Starting service..");
 
                 var host = CreateHostBuilder(args).Build();
                 host.Services.UseScheduler(scheduler =>
