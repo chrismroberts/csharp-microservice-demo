@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Coravel;
 using Serilog;
 using Serilog.Formatting.Json;
-using dotenv.net;
 
 namespace OrderProcessingWorker
 {
@@ -15,7 +14,7 @@ namespace OrderProcessingWorker
     {
         public static void Main(string[] args)
         {
-            DotEnv.Load();
+            DotNetEnv.Env.Load();
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
@@ -57,6 +56,7 @@ namespace OrderProcessingWorker
                 .UseSerilog()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddSingleton<IOrderConnector, OrderQueueConnector>();
                     services.AddScheduler();
                     services.AddTransient<ProcessOrder>();
                 });
