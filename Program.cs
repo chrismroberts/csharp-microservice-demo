@@ -56,6 +56,15 @@ namespace OrderProcessingWorker
                 .UseSerilog()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    var smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST");
+                    var smtpUser = Environment.GetEnvironmentVariable("SMTP_USER");
+                    var smtpPass = Environment.GetEnvironmentVariable("SMTP_PASS");
+
+                    services
+                        .AddFluentEmail("hello@morrotec.co.uk")
+                        .AddRazorRenderer()
+                        .AddSmtpSender(smtpHost, 587, smtpUser, smtpPass);
+                        
                     services.AddSingleton<IOrderConnector, OrderQueueConnector>();
                     services.AddScheduler();
                     services.AddTransient<ProcessOrder>();
