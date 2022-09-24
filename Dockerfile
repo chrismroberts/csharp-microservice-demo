@@ -4,6 +4,7 @@ COPY OrderProcessingWorker.csproj .
 RUN dotnet restore "OrderProcessingWorker.csproj"
 COPY . .
 RUN dotnet publish "OrderProcessingWorker.csproj" -c Release -o /publish
+EXPOSE 8000
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 as final
 WORKDIR /app
